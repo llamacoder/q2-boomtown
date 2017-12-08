@@ -14,6 +14,7 @@
 
 ###  Here are our style choices
 Color scheme:  Orange (#f15029), Black, and White
+
 Font:  default Materialize fonts (stretch goal to change font)
 
 
