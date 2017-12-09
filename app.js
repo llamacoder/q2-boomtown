@@ -8,13 +8,11 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
-// const cookieParser = require('cookie-parser')
 const port = process.env.PORT || 3000;
 const path = require('path');
 
 app.disable('x-powered-by')
 app.use(bodyParser.json())
-// app.use(cookieParser());
 
 switch (app.get('env')) {
   case 'development':
@@ -28,22 +26,10 @@ switch (app.get('env')) {
   default:
 }
 
-app.use(express.static(path.join('public')));
-
-// CSRF protection - this makes it break!!!!!
-// app.use((req, res, next) => {
-//   if (/json/.test(req.get('Accept'))) {
-//     return next();
-//   }
-//
-//   res.sendStatus(406);
-// });
-
 
 const routes = require('./routes/routes')
 app.use('/routes', routes)
 
-// eslint-disable-next-line max-params
 app.use((err, _req, res, _next) => {
   if (err.status && err.message) {
     return res
@@ -52,7 +38,6 @@ app.use((err, _req, res, _next) => {
       .send(err.message);
   }
 
-  // eslint-disable-next-line no-console
   console.error("In app err handler, stack is " + err.stack);
   res.sendStatus(500);
 });
@@ -63,9 +48,26 @@ app.use((req, res, next) => {
 
 app.listen(port, () => {
   if (app.get('env') !== 'test') {
-    // eslint-disable-next-line no-console
     console.log('Listening on port', port);
   }
 });
 
 module.exports = app
+
+
+// const cookieParser = require('cookie-parser')
+// eslint-disable-next-line max-params
+// eslint-disable-next-line no-console
+// eslint-disable-next-line no-console
+// app.use(express.static(path.join('public')));
+
+// CSRF protection - this makes it break!!!!!
+// app.use((req, res, next) => {
+//   if (/json/.test(req.get('Accept'))) {
+//     return next();
+//   }
+//
+//   res.sendStatus(406);
+// });
+
+// app.use(cookieParser());
