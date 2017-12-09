@@ -1,0 +1,13 @@
+#create_button_wrapper {
+    text-align: center;
+}
+
+#create_button {
+    margin: 20px;
+    font-size: 40px;
+    background-color: #f15029;
+}
+
+a.collection-item.active {
+  background-color: black;
+}

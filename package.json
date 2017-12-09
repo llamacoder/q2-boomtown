@@ -1,0 +1,36 @@
+{
+  "name": "q2-boomtown",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "test/mocha",
+    "start": "node app.js",
+    "start-dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/llamacoder/q2-boomtown.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/llamacoder/q2-boomtown/issues"
+  },
+  "homepage": "https://github.com/llamacoder/q2-boomtown#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "express": "^4.16.2",
+    "knex": "^0.14.2",
+    "morgan": "^1.9.0",
+    "pg": "^7.4.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "dotenv": "^4.0.0",
+    "mocha": "^4.0.1",
+    "nodemon": "^1.12.5"
+  }
+}
