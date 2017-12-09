@@ -27,8 +27,11 @@ switch (app.get('env')) {
 }
 
 
-const routes = require('./routes/routes')
-app.use('/routes', routes)
+const server = require('./serverSide/server')
+app.get('/', server.getAll)
+
+
+
 
 app.use((err, _req, res, _next) => {
   if (err.status && err.message) {
