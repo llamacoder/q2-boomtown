@@ -7,3 +7,7 @@
     font-size: 40px;
     background-color: #f15029;
 }
+
+a.collection-item.active {
+  background-color: black;
+}
