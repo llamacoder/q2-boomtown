@@ -21,6 +21,7 @@
   "homepage": "https://github.com/llamacoder/q2-boomtown#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "knex": "^0.14.2",
     "morgan": "^1.9.0",

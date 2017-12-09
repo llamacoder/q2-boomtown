@@ -10,9 +10,11 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const port = process.env.PORT || 3000;
 const path = require('path');
+const cors = require('cors');
 
 app.disable('x-powered-by')
 app.use(bodyParser.json())
+app.use(cors())
 
 switch (app.get('env')) {
   case 'development':
@@ -29,8 +31,6 @@ switch (app.get('env')) {
 
 const server = require('./serverSide/server')
 app.get('/', server.getAll)
-
-
 
 
 app.use((err, _req, res, _next) => {
