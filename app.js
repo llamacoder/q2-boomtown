@@ -8,7 +8,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 const path = require('path');
 const cors = require('cors');
 
@@ -31,7 +31,12 @@ switch (app.get('env')) {
 
 const server = require('./serverSide/server')
 app.get('/', server.getAllWorkshops)
-
+app.get('/mentors', server.getAllMentors)
+app.post('/', server.createWorkshop)
+// app.get('/:id', server.getOneWorkshop)
+// app.put('/:id', server.updateOneWorkshop)
+// app.delete('/:id', server.deleteOneWorkshop)
+// app.get('/sms', server.handleResponse)
 
 app.use((err, _req, res, _next) => {
   if (err.status && err.message) {
