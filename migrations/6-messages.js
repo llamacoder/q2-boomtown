@@ -4,10 +4,9 @@ exports.up = knex => {
     table.integer('workshop_id').notNullable()
     table.foreign('workshop_id').references('workshops.workshop_id')
     table.string('phone_number').notNullable().defaultsTo('')
-    table.string('text').notNullable().defaultsTo('')
     table.string('message_out').notNullable().defaultsTo('')
     table.string('message_in').notNullable().defaultsTo('')
-    table.timestamp('log_time').notNullable('').defaultTo(knex.raw('now()'))
+    table.timestamp('log_time').notNullable('').defaultTo('now()')
   })
 }
 
