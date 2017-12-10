@@ -1,4 +1,4 @@
-$( document ).ready(function() {
+$(document).ready(function() {
   function getWorkshops(){
     const collection_container = $(".collection")
       axios.get('http://localhost:3000/')
