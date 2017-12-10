@@ -6,9 +6,9 @@ exports.up = knex => {
       .defaultsTo('')
     table.date('date')
       .notNullable()
-      .defaultsTo('12/6/2017')
-    table.time('start_time').notNullable()
-    table.time('end_time').notNullable()
+      .defaultsTo('now()')
+    table.date('start_time').notNullable().defaultsTo('now()')
+    table.date('end_time').notNullable().defaultsTo('now()')
   })
 }
 exports.down = knex => {
