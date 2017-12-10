@@ -30,7 +30,7 @@ switch (app.get('env')) {
 
 
 const server = require('./serverSide/server')
-app.get('/', server.getAll)
+app.get('/', server.getAllWorkshops)
 
 
 app.use((err, _req, res, _next) => {
