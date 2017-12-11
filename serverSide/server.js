@@ -3,6 +3,25 @@ var JOBS = []
 
 const notifications = require('./notifications')
 
+//  Return all messages
+function getAllMessages(req, res, next) {
+  console.log("inside getAllMessages");
+  return knex('messages')
+              .then(results => {
+                res.status(200).json(results)
+        })
+}
+
+//  Return all feedback (messages with message-in value)
+function getAllMessagesIn(req, res, next) {
+  return knex('messages')
+              .whereNotNull('message_in')
+              .orderBy('workshop_id')
+              .then(results => {
+                res.status(200).json(results)
+        })
+}
+
 //  Return all workshops ordered by date then start time
 function getAllWorkshops(req, res, next) {
   return knex('workshops')
@@ -113,28 +132,24 @@ function handleResponse(req, res, next) {
 }
 
 //  Return the average feedback for all workshops
-// function getResponsesByWorkshopAverageFeedback(req, res, next) {
-//   // return knex('messages')
-//   //             .orderBy('first_name')
-//   //             .then(results => {
-//   //               res.status(200).json(results)
-//   //       })
-// }
-
-//  Return all responses by workshop
-// function getAllResponsesByWorkshop(req, res, next) {
-//   return knex('messages')
-//               .orderBy('workshop_id')
-//               .then(results => res.status(200).json(results))
-//               .catch(err => res.sendStatus(400))
-// }
-
+function getAveFeedbackByWS(req, res, next) {
+  // return knex('messages').select('name', 'message_in')
+  //             .whereNotNull('message_in')
+  //             .join('workshops')
+  //             .orderBy('workshop_id')
+  //             .then(results => {
+  //               //  munge this date and shove it into an array of objects
+  //
+  //               res.status(200).json([{workshop_id: 3, ave_feedback: 4},
+  //                                     {workshop_id: 4, ave_feedback: 5}])
+  //       })
+}
 
 
 
 
 module.exports = {
   getAllWorkshops, getAllMentors, getOneWorkshop, createWorkshop,
-  updateOneWorkshop, deleteOneWorkshop, handleResponse
-  // getResponsesByWorkshopAverageFeedback, getAllResponsesByWorkshop
+  updateOneWorkshop, deleteOneWorkshop, handleResponse, getAllMessages,
+  getAllMessagesIn, getAveFeedbackByWS
 }

@@ -6,6 +6,7 @@ exports.up = knex => {
     table.string('phone_number').notNullable().defaultsTo('')
     table.string('message_out').notNullable().defaultsTo('')
     table.string('message_in').notNullable().defaultsTo('')
+    table.integer('feedback').nullable()
     table.timestamp('log_time').notNullable('').defaultTo('now()')
   })
 }
