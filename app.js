@@ -33,7 +33,10 @@ const server = require('./serverSide/server')
 app.get('/', server.getAllWorkshops)
 app.get('/mentors', server.getAllMentors)
 app.post('/', server.createWorkshop)
-// app.get('/:id', server.getOneWorkshop)
+app.get('/:id', server.getOneWorkshop)
+// app.get('/getResponsesByWorkshopAverageFeedback',
+//                 server.getResponsesByWorkshopAverageFeedback)
+// app.get('/getAllResponsesByWorkshop', server.getAllResponsesByWorkshop)
 // app.put('/:id', server.updateOneWorkshop)
 // app.delete('/:id', server.deleteOneWorkshop)
 // app.get('/sms', server.handleResponse)
@@ -54,28 +57,10 @@ app.use((req, res, next) => {
   res.status(404).json({ error: "Not Found"   })
 })
 
-app.listen(port, () => {
+const listeningOnPort = app.listen(port, () => {
   if (app.get('env') !== 'test') {
     console.log('Listening on port', port);
   }
 });
 
-module.exports = app
-
-
-// const cookieParser = require('cookie-parser')
-// eslint-disable-next-line max-params
-// eslint-disable-next-line no-console
-// eslint-disable-next-line no-console
-// app.use(express.static(path.join('public')));
-
-// CSRF protection - this makes it break!!!!!
-// app.use((req, res, next) => {
-//   if (/json/.test(req.get('Accept'))) {
-//     return next();
-//   }
-//
-//   res.sendStatus(406);
-// });
-
-// app.use(cookieParser());
+module.exports = { app, listeningOnPort }

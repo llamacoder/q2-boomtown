@@ -1,4 +1,5 @@
 const knex = require('../knex');
+var JOBS = []
 
 const notifications = require('./notifications')
 
@@ -14,6 +15,7 @@ function getAllWorkshops(req, res, next) {
 //  Return all mentors ordered by date then start time
 function getAllMentors(req, res, next) {
   return knex('mentors')
+              .orderBy('first_name')
               .then(results => {
                 res.status(200).json(results)
         })
@@ -31,6 +33,7 @@ function createWorkshop(req, res, next) {
        res.status(400).json({error: {status: 400, message: "Input not valid"}})
   }
 
+  //  now insert the new workshop
   return knex('workshops')
               .insert({"name": name, "start_time": start_time,
                       "end_time": end_time, "date": date})
@@ -47,9 +50,18 @@ function createWorkshop(req, res, next) {
                                                            "workshop_id":ws.workshop_id})
                 })
                 Promise.all(promises).then(result => {
-                  //  set up the push notifications
-                  notifications.setupNotifications(ws)
-                  res.sendStatus(201)
+                  //  set up the push notifications for all the founders
+                  return knex('founders')
+                    .then(founders => {
+                      let jobs = founders.map(founder =>
+                      notifications.setupNotifications(ws, founder.phone_number))
+
+                      //  save the jobs in the global array (just stored in a
+                      //  global array because they must be restarted if the
+                      //  server goes down
+                      JOBS = [...JOBS, ...jobs]
+                      res.sendStatus(201)
+                    })
                 })
         })
 }
@@ -57,9 +69,12 @@ function createWorkshop(req, res, next) {
 
 
 function getOneWorkshop(req, res, next) {
-  // return knex('books').select('id', 'title', 'author', 'genre', 'description',
-  //             'cover_url as coverUrl', 'created_at as createdAt',
-              // 'updated_at as updatedAt').where('id', id)
+  return knex('workshops')
+      .where('workshop_id', req.params.id)
+      .then(results => {
+        results && results.length > 0 ? res.status(200).json(results[0]) :
+          res.sendStatus(404)
+      })
 }
 
 function updateOneWorkshop(req, res, next) {
@@ -81,6 +96,14 @@ function deleteOneWorkshop(req, res, next) {
   //               'updated_at as updatedAt'])
 }
 
+//  Return the most recent message to a founder
+function getLastMessageByNumber(phone_number) {
+  return knex('messages')
+              .where('phone_number', phone_number)
+              .orderBy('phone_number')
+              .limit(1)
+}
+
 function handleResponse(req, res, next) {
   // return knex('books').where('id', id)
   //   .del()
@@ -89,9 +112,29 @@ function handleResponse(req, res, next) {
   //               'updated_at as updatedAt'])
 }
 
+//  Return the average feedback for all workshops
+// function getResponsesByWorkshopAverageFeedback(req, res, next) {
+//   // return knex('messages')
+//   //             .orderBy('first_name')
+//   //             .then(results => {
+//   //               res.status(200).json(results)
+//   //       })
+// }
+
+//  Return all responses by workshop
+// function getAllResponsesByWorkshop(req, res, next) {
+//   return knex('messages')
+//               .orderBy('workshop_id')
+//               .then(results => res.status(200).json(results))
+//               .catch(err => res.sendStatus(400))
+// }
+
+
+
 
 
 module.exports = {
   getAllWorkshops, getAllMentors, getOneWorkshop, createWorkshop,
   updateOneWorkshop, deleteOneWorkshop, handleResponse
+  // getResponsesByWorkshopAverageFeedback, getAllResponsesByWorkshop
 }
