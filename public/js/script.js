@@ -43,9 +43,6 @@ $(document).ready(function() {
   }
   getWorkshops()
 
-
-
-
    $("#create_button").on("click", function() {
 
     $("#workshop_name").val("")
@@ -59,6 +56,7 @@ $(document).ready(function() {
 
     const mentor_container = $('#mentor_container')
     axios.get('http://localhost:8000/mentors').then(result => {
+
       for (let i = 0; i < result.data.length; i++) {
         const firstName = result.data[i].first_name
         const lastName = result.data[i].last_name
@@ -78,7 +76,7 @@ $(document).ready(function() {
 
 
   })
-
+//end of document.ready
 
 
 
@@ -110,6 +108,17 @@ $("#save_button").on("click", function() {
 
 })
 
+  const receivedInfo = {
+    name: workshopName,
+    mentors: selectedMentorsArray,
+    date: workshopDate,
+    start_time: workshopStartTime,
+    end_time: workshopEndTime
+  }
+  axios.post('http://localhost:8000/', {receivedInfo})
+  .then(function (response){
+    console.log(response);
+  })
 
 
 })

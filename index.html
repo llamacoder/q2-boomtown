@@ -52,7 +52,7 @@
 
 
         <div class="container valign-center" id="create_button_wrapper">
-          <a href="#modal1" class="waves-effect waves-light btn-large modal-trigger" onclick="clickCreate()" id="create_button">CREATE</a>
+          <a href="#modal1" class="waves-effect waves-light btn-large modal-trigger" id="create_button">CREATE</a>
 
           <div class="collection">
 
@@ -77,19 +77,12 @@
                 </div>
 
 
-               <!-- Having difficulty adding in new mentors... -->
+
 
                 <div class="row">
                   <div class="input-field col s12" >
                     <select id="mentor_container" multiple="multiple">
-
-                <option class= "mentor_container" value="" disabled selected >Select Mentor(s)</option>
-
-                      <!-- <option value="Teddi Maull">Teddi Maull</option>
-                      <option value="Teddi Maull">Tbob</option>
-                      <option value="Teddi Maull">Teadfl</option> -->
-
-
+                      <option class= "mentor_container" value="" disabled selected >Please Select Mentor(s)</option>
                     </select>
                     <label>Select Mentor(s)</label>
                     </div>
@@ -128,7 +121,7 @@
           <div class="modal-footer" id= "footer">
 
             <a
-             href="#" class="waves-effect waves-light btn-large modal-trigger" onclick="userInput(event)" id="save_button">Save</a>
+             href="#" class="waves-effect waves-light btn-large modal-trigger" id="save_button">Save</a>
 
              <a
               href="#" class="waves-effect waves-light btn-large modal-trigger" id="cancel_button">Cancel</a><br>
