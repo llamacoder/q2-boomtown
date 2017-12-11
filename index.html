@@ -76,16 +76,23 @@
                   </div>
                 </div>
 
+
+               <!-- Having difficulty adding in new mentors... -->
+
                 <div class="row">
                   <div class="input-field col s12" >
-                    <select id="mentor_name" multiple="multiple">
-                <option value="" disabled selected>Select Mentor(s)</option>
-                <option value="1">Option 1</option>
-                <option value="2">Option 2</option>
-                <option value="3">Option 3</option>
-              </select>
+                    <select id="mentor_container" multiple="multiple">
+
+                <option class= "mentor_container" value="" disabled selected >Select Mentor(s)</option>
+
+                      <!-- <option value="Teddi Maull">Teddi Maull</option>
+                      <option value="Teddi Maull">Tbob</option>
+                      <option value="Teddi Maull">Teadfl</option> -->
+
+
+                    </select>
                     <label>Select Mentor(s)</label>
-                  </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -121,7 +128,7 @@
           <div class="modal-footer" id= "footer">
 
             <a
-             href="#" class="waves-effect waves-light btn-large modal-trigger" onclick="userInput()" id="save_button">Save</a>
+             href="#" class="waves-effect waves-light btn-large modal-trigger" onclick="userInput(event)" id="save_button">Save</a>
 
              <a
               href="#" class="waves-effect waves-light btn-large modal-trigger" id="cancel_button">Cancel</a><br>
