@@ -1,4 +1,6 @@
-const knex = require('../knex')
+const knex = require('../knex');
+
+const notifications = require('./notifications')
 
 //  Return all workshops ordered by date then start time
 function getAllWorkshops(req, res, next) {
@@ -44,9 +46,15 @@ function createWorkshop(req, res, next) {
                   return knex('mentors_workshops').insert({"mentor_id":mentorId,
                                                            "workshop_id":ws.workshop_id})
                 })
-                Promise.all(promises).then(result => res.sendStatus(201))
+                Promise.all(promises).then(result => {
+                  //  set up the push notifications
+                  notifications.setupNotifications(ws)
+                  res.sendStatus(201)
+                })
         })
 }
+
+
 
 function getOneWorkshop(req, res, next) {
   // return knex('books').select('id', 'title', 'author', 'genre', 'description',
