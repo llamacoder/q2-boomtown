@@ -16,7 +16,7 @@ $(document).ready(function() {
       }
 
       $('.modal').modal()
-      $('select').material_select()
+
 
       $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
@@ -42,90 +42,72 @@ $(document).ready(function() {
     })
   }
   getWorkshops()
+
+   $("#create_button").on("click", function() {
+
+    $("#workshop_name").val("")
+    $("#mentor_container").empty();
+    $("#workshop_date").val("");
+    $("#workshop_start").val("");
+    $("#workshop_end").val("");
+    // Delete button disappears when create button is clicked
+    let divObj = document.getElementById('delete_button')
+    divObj.style.display = 'none'
+
+    const mentor_container = $('#mentor_container')
+    axios.get('http://localhost:8000/mentors').then(result => {
+
+      for (let i = 0; i < result.data.length; i++) {
+        const firstName = result.data[i].first_name
+        const lastName = result.data[i].last_name
+        const mentorID = result.data[i].mentor_id
+
+        const optionHTML = `<option value = ${mentorID}>${firstName}  ${lastName}</option>`
+
+        mentor_container.append(optionHTML);
+
+        $('select').material_select()
+      }
+      const placeholder = '<option class= "mentor_container" value="" disabled selected >Please Select Mentor(s)</option>'
+      mentor_container.append(placeholder)
+      $('select').material_select()
+
+    })
+
+
+  })
+//end of document.ready
+
+
+
+
+$("#save_button").on("click", function() {
+  const workshopName = $("#workshop_name").val()
+  const workshopDate = $("#workshop_date").val()
+  const workshopStartTime = $("#workshop_start").val()
+  const workshopEndTime = $("#workshop_end").val()
+
+  const mentorsSelected = $("#mentor_container")[0].selectedOptions
+  let selectedMentorsArray = []
+  for (let i = 0; i < mentorsSelected.length - 1; i++) {
+    selectedMentorsArray.push(Number(mentorsSelected[i].value))
+  }
+
+  const receivedInfo = {
+    name: workshopName,
+    mentors: selectedMentorsArray,
+    date: workshopDate,
+    start_time: workshopStartTime,
+    end_time: workshopEndTime
+  }
+  axios.post('http://localhost:8000/', {receivedInfo})
+  .then(function (response){
+    console.log(response);
+  })
+
+
 })
 
 
 
-
-  let userInput = () => {
-  const receivedInput = {}
-
-  // name of workshop_
-  const inputWorkshop = document.getElementById('workshop_name')
-  // mentor
-
-  const mentorsSelected = $('#mentor_name').val()
-  // for (let i = 0; i < mentor_name.length; i++){
-  //   if (mentor_name[i] === "checked"){
-  //     // put the value into an object...
-  //    mentorsSelected[instr] = {}
-  //   }
-  // }
-
-  // date
-  const inputDate = document.getElementById('workshop_date')
-  // start time
-  const startTime = document.getElementById('workshop_start')
-  // end time
-  const endTime = document.getElementById('workshop_end')
-
-  receivedInput.work_shop = inputWorkshop
-  receivedInput.mentors = mentorsSelected
-  receivedInput.mentor = mentorsSelected
-  receivedInput.date = inputDate
-  receivedInput.start = startTime
-  receivedInput.end = endTime
-
-  console.log(receivedInput)
-}
-
-let clickCreate = () => {
-
-  // Delete button disappears when create button is clicked
-  let divObj = document.getElementById('delete_button')
-  divObj.style.display = 'none'
-
-  const mentor_container = $('.mentor_container')
-  // console.log(mentor_container)
-  axios.get('http://localhost:8000/mentors').then(result => {
-    console.log(mentor_container);
-    let line;
-    for (let i = 0; i < result.data.length; i++) {
-      // console.log(result.data.length, result.data, result)
-      // let mentor_container = $('#mentor_container')
-
-      const count = i
-      let firstName = result.data[i].first_name
-      let lastName = result.data[i].last_name
-      let fullName = `${firstName} ${lastName}`
-      line += "<option>";
-      line += fullName;
-      line += "</option>";
-
-      // var para = document.createElement("option");
-      // var node = document.createNode(fullName);
-      // para.appendChild(node);
-      // var element = document.getElementById("option");
-      // element.appendChild(para);
-
-      mentor_container.append(line);
-
-      // mentor_container.append($('<option>',{
-      //   value: result.data,
-      //   text: fullName
-      // }));
-
-    //create modal for clickable list link
-
-
-
-
-    // $.each(items, function (i, item) {
-    //     $('#mySelect').append($('<option>', {
-    //         value: item.value,
-    //         text : item.text
-    //     }));
-    // });
-    }
-  })
-}
+})
