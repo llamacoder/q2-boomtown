@@ -1,3 +1,7 @@
+
+a.collection-item.active {
+  background-color: black;
+}
 #create_button_wrapper {
     text-align: center;
 }
@@ -8,6 +12,24 @@
     background-color: #f15029;
 }
 
-a.collection-item.active {
-  background-color: black;
+#footer{
+  text-align: center;
+  justify-content: space-around;
+
+}
+
+#save_button{
+  text-align: center;
+  justify-content: space-around;
+}
+
+
+#cancel_button{
+  text-align: center;
+  justify-content: space-around;
+}
+
+#delete_button{
+  text-align: center;
+  justify-content: space-around;
 }
