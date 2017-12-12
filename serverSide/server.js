@@ -98,8 +98,22 @@ function getOneWorkshop(req, res, next) {
   return knex('workshops')
       .where('workshop_id', req.params.id)
       .then(results => {
-        results && results.length > 0 ? res.status(200).json(results[0]) :
-          res.sendStatus(404)
+        if (!results || results.length === 0 ) { res.sendStatus(404) }
+        else {
+          let ws = results[0]
+          //  get the mentors for this workshops
+          return knex('mentors')
+                  .select('mentors.mentor_id', 'mentors.first_name', 'mentors.last_name')
+                  .join('mentors_workshops','mentors.mentor_id',
+                        'mentors_workshops.mentor_id')
+                  .where('mentors_workshops.workshop_id', ws.workshop_id)
+                  .then(mentors => {
+                    ws.mentors = mentors
+                    res.status(200).json(ws)
+                  })
+                  .catch(function(error) {
+                    console.error(error);
+                  })        }
       })
 }
 
