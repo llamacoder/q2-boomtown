@@ -7,8 +7,8 @@ exports.up = knex => {
     table.date('date')
       .notNullable()
       .defaultsTo('now()')
-    table.date('start_time').notNullable().defaultsTo('now()')
-    table.date('end_time').notNullable().defaultsTo('now()')
+    table.string('start_time').notNullable().defaultsTo('')
+    table.string('end_time').notNullable().defaultsTo('')
   })
 }
 exports.down = knex => {
