@@ -4,7 +4,7 @@ const authToken = '84252d06d9e17b1be0a4841dd3d61843';   // Your Auth Token from 
 const client = new twilio(accountSid, authToken);
 const schedule = require('node-schedule');
 
-function setupNotification(ws, phoneNumber) {
+function setupNotification(ws, phoneNumber, msg) {
   //  format the date field properly for the notification scheduler
   let hours = parseInt(ws.end_time.substring(0,2))
   if (ws.end_time.substring(5) === "PM") hours += 12
@@ -21,7 +21,7 @@ function setupNotification(ws, phoneNumber) {
   console.log(notifNum);
   var j = schedule.scheduleJob(notifDate, function(){
     client.messages.create({
-        body: `Please rate the content of the ${ws.name} workshop by responding with: \n\t5 (awesome) \n\t4 (good) \n\t3 (ok) \n\t2 (not helpful) \n\t1 (waste of time) \n\t0 (did not attend)`,
+      body: msg,
         to: notifNum, // Text this number
         from: '+17205730412' // From a valid Twilio number
       })

@@ -63,17 +63,33 @@ function createWorkshop(req, res, next) {
                   //  set up the push notifications for all the founders
                   return knex('founders')
                     .then(founders => {
+                      let msg = `Please rate the content of the ${ws.name} workshop by responding with: \n\t5 (awesome) \n\t4 (good) \n\t3 (ok) \n\t2 (not helpful) \n\t1 (waste of time) \n\t0 (did not attend)`
                       let jobs = founders.map(founder =>
-                      notifications.setupNotification(ws, founder.phone_number))
+                      notifications.setupNotification(ws, founder.phone_number, msg))
 
                       //  save the jobs in the global array (just stored in a
                       //  global array because they must be restarted if the
                       //  server goes down
                       JOBS = [...JOBS, ...jobs]
-                      res.sendStatus(201)
+
+                      //  save the message, phone number, and workshop name
+                      //  in the message table
+                      let logTime = new Date()
+                      let promises2 = founders.map(founder => {
+                        return knex('messages').insert({ 'workshop_id': ws.workshop_id,
+                                                         'workshop_name': ws.name,
+                                                         'phone_number': founder.phone_number,
+                                                         'message_out': msg,
+                                                          'log_time': logTime })
+                                                .returning()
+                      })
+                      Promise.all(promises2).then(result => {
+                          console.log("logged the messages")
+                          res.sendStatus(201)
+                      })
                     })
-                })
-        })
+                })    // end of promises looping through mentors
+              })
 }
 
 
