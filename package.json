@@ -28,7 +28,6 @@
     "morgan": "^1.9.0",
     "node-schedule": "^1.2.5",
     "pg": "^7.4.0",
-    "supertest": "^3.0.0",
     "twilio": "^3.10.1"
   },
   "devDependencies": {

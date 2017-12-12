@@ -1,7 +1,7 @@
 const knex = require('../knex');
 var JOBS = []
 
-const notifications = require('./notifications')
+const notifications = require('./schedule-server')
 
 //  Return all messages
 function getAllMessages(req, res, next) {
@@ -12,15 +12,6 @@ function getAllMessages(req, res, next) {
         })
 }
 
-//  Return all feedback (messages with message-in value)
-function getAllMessagesIn(req, res, next) {
-  return knex('messages')
-              .whereNotNull('message_in')
-              .orderBy('workshop_id')
-              .then(results => {
-                res.status(200).json(results)
-        })
-}
 
 //  Return all workshops ordered by date then start time
 function getAllWorkshops(req, res, next) {
@@ -132,25 +123,9 @@ function handleResponse(req, res, next) {
   //               'updated_at as updatedAt'])
 }
 
-//  Return the average feedback for all workshops
-function getAveFeedbackByWS(req, res, next) {
-  // return knex('messages').select('name', 'message_in')
-  //             .whereNotNull('message_in')
-  //             .join('workshops')
-  //             .orderBy('workshop_id')
-  //             .then(results => {
-  //               //  munge this date and shove it into an array of objects
-  //
-  //               res.status(200).json([{workshop_id: 3, ave_feedback: 4},
-  //                                     {workshop_id: 4, ave_feedback: 5}])
-  //       })
-}
-
-
 
 
 module.exports = {
   getAllWorkshops, getAllMentors, getOneWorkshop, createWorkshop,
-  updateOneWorkshop, deleteOneWorkshop, handleResponse, getAllMessages,
-  getAllMessagesIn, getAveFeedbackByWS
+  updateOneWorkshop, deleteOneWorkshop, handleResponse, getAllMessages
 }

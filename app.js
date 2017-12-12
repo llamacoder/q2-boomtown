@@ -33,13 +33,11 @@ const server = require('./serverSide/server')
 app.get('/', server.getAllWorkshops)
 app.get('/mentors', server.getAllMentors)
 app.get('/messages', server.getAllMessages)
-app.get('/messagesIn', server.getAllMessagesIn)
 app.get('/workshop/:id', server.getOneWorkshop)
 app.post('/', server.createWorkshop)
-app.get('/aveFeedback', server.getAveFeedbackByWS)
-// app.put('/:id', server.updateOneWorkshop)
-// app.delete('/:id', server.deleteOneWorkshop)
-// app.get('/sms', server.handleResponse)
+app.put('/workshop/:id', server.updateOneWorkshop)
+app.delete('/workshop/:id', server.deleteOneWorkshop)
+app.get('/sms', server.handleResponse)
 
 app.use((err, _req, res, _next) => {
   if (err.status && err.message) {

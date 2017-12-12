@@ -14,21 +14,30 @@ function setupNotifications(ws, phoneNumber){
   let seconds = 0
   // let date = new Date(ws.date.getFullYear(), ws.date.getMonth(), ws.date.getDate(), hours, minutes, seconds)
 
-  let date = new Date(2017, 11, 11, 10, 12, 00)
-  console.log("phone number: " + phoneNumber + " date is: " + date);
+
+  var schedule = require('node-schedule');
+  var date = new Date(2017, 11, 21, 5, 30, 0);
+  console.log(date);
+
+  var j = schedule.scheduleJob(date, function(){
+    console.log('The world is going to end today.');
+  });
+
+  // let date = new Date(2017, 11, 11, 10, 12, 00)
+  // console.log("phone number: " + phoneNumber + " date is: " + date);
 
   //  Now make schedule the notification
-  return schedule.scheduleJob(date, function(){
-    console.log("scheduling notification to " + phoneNumber);
-    client.messages.create({
-        body: `Please rate the content of the ${ws.name} workshop by responding with: \n\t5 (awesome) \n\t4 (good) \n\t3 (ok) \n\t2 (not helpful) \n\t1 (waste of time) \n\t0 (did not attend)`,
-        to: '+1' + phoneNumber,  // must be a confirmed friendly number within Twilio
-        from: '+17205730412' // From a valid Twilio number
-      })
-      .then((message) => {
-        console.log("did message " + phoneNumber + " SID is: " + message.sid);
-      })
-  });
+  // return schedule.scheduleJob(date, function(){
+  //   console.log("scheduling notification to " + phoneNumber);
+  //   client.messages.create({
+  //       body: `Please rate the content of the ${ws.name} workshop by responding with: \n\t5 (awesome) \n\t4 (good) \n\t3 (ok) \n\t2 (not helpful) \n\t1 (waste of time) \n\t0 (did not attend)`,
+  //       to: '+1' + phoneNumber,  // must be a confirmed friendly number within Twilio
+  //       from: '+17205730412' // From a valid Twilio number
+  //     })
+  //     .then((message) => {
+  //       console.log("did message " + phoneNumber + " SID is: " + message.sid);
+  //     })
+  // });
 }
 
 
