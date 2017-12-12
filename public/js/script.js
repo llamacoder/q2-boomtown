@@ -84,10 +84,19 @@ $(document).ready(function() {
 
 
 $("#save_button").on("click", function() {
+
   const workshopName = $("#workshop_name").val()
   const workshopDate = $("#workshop_date").val()
   const workshopStartTime = $("#workshop_start").val()
   const workshopEndTime = $("#workshop_end").val()
+
+  if(workshopName === "" || workshopDate === "" || workshopStartTime === "" || workshopEndTime === "" || mentorsSelected === []) {
+    Materialize.toast("All fields are required!", 4000)
+  }
+  if(new Date(workshopDate) < new Date()) {
+    Materialize.toast("Must select a future date!", 4000)
+  }
+
 
   const mentorsSelected = $("#mentor_container")[0].selectedOptions
   let selectedMentorsArray = []
@@ -106,10 +115,8 @@ $("#save_button").on("click", function() {
   .then(function (response){
     console.log(response);
   })
-
-
 })
 
 
-
+//end of document ready
 })

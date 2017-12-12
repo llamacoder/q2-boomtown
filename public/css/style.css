@@ -21,20 +21,50 @@ a.collection-item.active {
 #save_button{
   text-align: center;
   justify-content: space-around;
+  background-color: #f15029;
 }
 
 
 #cancel_button{
   text-align: center;
   justify-content: space-around;
+  background-color: #f15029;
 }
 
 #delete_button{
   text-align: center;
   justify-content: space-around;
+  background-color:#f15029;
 }
 
 .modal{
   width: 80% !important;
-  max-height: 80% !important;
+  max-height: 85% !important;
+}
+
+.picker__date-display {
+  background-color:#f15029;
+}
+.picker__year-display {
+  background-color:#f15029;
+}
+.picker__month-display {
+  background-color:#f15029;
+}
+.picker__day-display {
+  background-color:#f15029;
+}
+.picker__weekday-display {
+  background-color:#f15029;
+}
+.picker__day--selected.picker__day--selected:hover.picker--focused .picker__day--selected {
+  background-color:#f15029;
+}
+
+#toast-container {
+  top: auto !important;
+  right: auto !important;
+  bottom: 50%;
+  left:42%;
+  background-color: #f15029
 }

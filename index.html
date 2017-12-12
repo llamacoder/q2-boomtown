@@ -65,10 +65,10 @@
         <!-- Modal Structure -->
         <div id="modal1" class="modal">
           <div class="modal-content">
-            <h4>Workshop</h4>
+            <h4>New Workshop</h4>
 
             <div class="row">
-              <form class="col s12">
+              <form class="col s12" id= "workshop_form">
                 <div class="row modal-form-row">
                   <div class="input-field col s12">
                     <input id="workshop_name" type="text" class="validate">
@@ -90,7 +90,7 @@
 
                 <div class="row">
                   <div class="input-field col s12">
-                    <input id="workshop_date" type="text" class="datepicker">
+                    <input id="workshop_date" type="text" class="datepicker ">
                     <label for ="workshop_date" >Select a Date</label>
                   </div>
                 </div>
@@ -118,10 +118,10 @@
              href="#" class="waves-effect waves-light btn-large modal-trigger" id="save_button">Save</a>
 
              <a
-              href="#" class="waves-effect waves-light btn-large modal-trigger" id="cancel_button">Cancel</a><br>
+              href="#" class="waves-effect waves-light btn-large modal-trigger modal-close" id="cancel_button">Cancel</a><br>
 
             <a
-             href="#" class="waves-effect waves-light btn-large modal-trigger" id="delete_button">Delete</a>
+             href="#" class="waves-effect waves-light btn-large modal-trigger modal-close" id="delete_button">Delete</a>
           </div>
         </div>
 
