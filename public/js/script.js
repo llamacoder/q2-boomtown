@@ -90,19 +90,19 @@ $("#save_button").on("click", function() {
   const workshopStartTime = $("#workshop_start").val()
   const workshopEndTime = $("#workshop_end").val()
 
-  if(workshopName === "" || workshopDate === "" || workshopStartTime === "" || workshopEndTime === "" || mentorsSelected === []) {
+  const mentorsSelected = $("#mentor_container")[0].selectedOptions
+  let selectedMentorsArray = []
+  for (let i = 0; i < mentorsSelected.length - 1; i++) {
+    selectedMentorsArray.push(Number(mentorsSelected[i].value))
+  }
+
+  if(workshopName === "" || workshopDate === "" || workshopStartTime === "" || workshopEndTime === "" || selectedMentorsArray === []) {
     Materialize.toast("All fields are required!", 4000)
   }
   if(new Date(workshopDate) < new Date()) {
     Materialize.toast("Must select a future date!", 4000)
   }
 
-
-  const mentorsSelected = $("#mentor_container")[0].selectedOptions
-  let selectedMentorsArray = []
-  for (let i = 0; i < mentorsSelected.length - 1; i++) {
-    selectedMentorsArray.push(Number(mentorsSelected[i].value))
-  }
 
   const receivedInfo = {
     name: workshopName,

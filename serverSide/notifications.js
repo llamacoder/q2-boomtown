@@ -14,6 +14,8 @@ function setupNotifications(ws, phoneNumber){
   let seconds = 0
   let date = new Date(ws.date.getFullYear(), ws.date.getMonth(), ws.date.getDate(), hours, minutes, seconds)
 
+  console.log("phone number: " + phoneNumber);
+
   //  Now make schedule the notification
   return schedule.scheduleJob(date, function(){
     console.log("scheduling notification to " + phoneNumber);
