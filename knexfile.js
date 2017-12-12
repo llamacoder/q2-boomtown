@@ -2,7 +2,7 @@
 
 module.exports = {
   development: {
-    client: 'pg', debug: true,
+    client: 'pg', debug: false,
     connection: `postgres://localhost/bws_dev`
 
     // migrations: {

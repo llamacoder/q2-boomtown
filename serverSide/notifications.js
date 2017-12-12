@@ -10,7 +10,7 @@ function setupNotifications(ws, phoneNumber){
   //  format the date field properly for the notification scheduler
   let hours = parseInt(ws.end_time.substring(0,2))
   let minutes = parseInt(ws.end_time.substring(3,5))
-  let seconds = parseInt(ws.end_time.substring(6))
+  let seconds = 0
   let date = new Date(ws.date.getFullYear(), ws.date.getMonth(), ws.date.getDate(), hours, minutes, seconds)
 
   //  Now make schedule the notification

@@ -53,6 +53,7 @@ function createWorkshop(req, res, next) {
        res.status(400).json({error: {status: 400, message: "Input not valid"}})
   }
 
+
   //  now insert the new workshop
   return knex('workshops')
               .insert({"name": name, "start_time": start_time,
