@@ -45,7 +45,6 @@ function getAllMentors(req, res, next) {
 function createWorkshop(req, res, next) {
   //  Get all the data fields
   const { name, start_time, end_time, date, mentors } = req.body.receivedInfo
-  console.log(req.body.receivedInfo);
 
   //  Input validation
   if (!name || !start_time || !end_time || !date || !mentors ||
