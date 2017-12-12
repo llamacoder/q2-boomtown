@@ -12,9 +12,10 @@ function setupNotifications(ws, phoneNumber){
   if (ws.end_time.substring(5) === "PM") hours += 12
   let minutes = parseInt(ws.end_time.substring(3,5))
   let seconds = 0
-  let date = new Date(ws.date.getFullYear(), ws.date.getMonth(), ws.date.getDate(), hours, minutes, seconds)
+  // let date = new Date(ws.date.getFullYear(), ws.date.getMonth(), ws.date.getDate(), hours, minutes, seconds)
 
-  console.log("phone number: " + phoneNumber);
+  let date = new Date(2017, 11, 11, 10, 12, 00)
+  console.log("phone number: " + phoneNumber + " date is: " + date);
 
   //  Now make schedule the notification
   return schedule.scheduleJob(date, function(){
