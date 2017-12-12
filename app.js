@@ -8,7 +8,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 const path = require('path');
 const cors = require('cors');
 
@@ -30,8 +30,14 @@ switch (app.get('env')) {
 
 
 const server = require('./serverSide/server')
-app.get('/', server.getAll)
-
+app.get('/', server.getAllWorkshops)
+app.get('/mentors', server.getAllMentors)
+app.get('/messages', server.getAllMessages)
+app.get('/workshop/:id', server.getOneWorkshop)
+app.post('/', server.createWorkshop)
+app.put('/workshop/:id', server.updateOneWorkshop)
+app.delete('/workshop/:id', server.deleteOneWorkshop)
+app.get('/sms', server.handleResponse)
 
 app.use((err, _req, res, _next) => {
   if (err.status && err.message) {
@@ -49,28 +55,10 @@ app.use((req, res, next) => {
   res.status(404).json({ error: "Not Found"   })
 })
 
-app.listen(port, () => {
+const listeningOnPort = app.listen(port, () => {
   if (app.get('env') !== 'test') {
     console.log('Listening on port', port);
   }
 });
 
-module.exports = app
-
-
-// const cookieParser = require('cookie-parser')
-// eslint-disable-next-line max-params
-// eslint-disable-next-line no-console
-// eslint-disable-next-line no-console
-// app.use(express.static(path.join('public')));
-
-// CSRF protection - this makes it break!!!!!
-// app.use((req, res, next) => {
-//   if (/json/.test(req.get('Accept'))) {
-//     return next();
-//   }
-//
-//   res.sendStatus(406);
-// });
-
-// app.use(cookieParser());
+module.exports = { app, listeningOnPort }

@@ -157,17 +157,17 @@ describe('Workshops Table', () => {
           },
 
           start_time: {
-            type: 'date',
-            maxLength: 20,
+            type: 'character varying',
+            maxLength: 25,
             nullable: false,
-            defaultValue: 'now()'
+            defaultValue: "''::character varying"
           },
 
           end_time: {
-            type: 'date',
-            maxLength: 20,
+            type: 'character varying',
+            maxLength: 25,
             nullable: false,
-            defaultValue: 'now()'
+            defaultValue: "''::character varying"
           }
 
         }
