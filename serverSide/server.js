@@ -5,7 +5,6 @@ const notifications = require('./schedule-server')
 
 //  Return all messages
 function getAllMessages(req, res, next) {
-  console.log("inside getAllMessages");
   return knex('messages')
               .then(results => {
                 res.status(200).json(results)
@@ -65,7 +64,7 @@ function createWorkshop(req, res, next) {
                   return knex('founders')
                     .then(founders => {
                       let jobs = founders.map(founder =>
-                      notifications.setupNotifications(ws, founder.phone_number))
+                      notifications.setupNotification(ws, founder.phone_number))
 
                       //  save the jobs in the global array (just stored in a
                       //  global array because they must be restarted if the
