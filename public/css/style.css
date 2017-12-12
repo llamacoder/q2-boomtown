@@ -33,3 +33,8 @@ a.collection-item.active {
   text-align: center;
   justify-content: space-around;
 }
+
+.modal{
+  width: 80% !important;
+  max-height: 80% !important;
+}
