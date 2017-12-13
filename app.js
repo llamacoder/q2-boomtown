@@ -32,12 +32,12 @@ app.use(express.static(path.join('public')));
 
 
 const server = require('./serverSide/server')
-app.get('/', server.getAllWorkshops)
+app.get('/workshops', server.getAllWorkshops)
 app.get('/mentors', server.getAllMentors)
 app.get('/feedback', server.getFeedback)
 app.get('/workshop/:id', server.getOneWorkshop)
-app.post('/', server.createWorkshop)
-app.put('/workshop/:id', server.updateOneWorkshop)
+app.post('/workshops', server.createWorkshop)
+app.put('/:id', server.updateOneWorkshop)
 app.delete('/workshop/:id', server.deleteOneWorkshop)
 app.post('/sms', server.handleResponse)
 
