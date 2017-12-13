@@ -30,11 +30,11 @@ switch (app.get('env')) {
 
 
 const server = require('./serverSide/server')
-app.get('/', server.getAllWorkshops)
+app.get('/workshops', server.getAllWorkshops)
 app.get('/mentors', server.getAllMentors)
 app.get('/messages', server.getAllMessages)
 app.get('/workshop/:id', server.getOneWorkshop)
-app.post('/', server.createWorkshop)
+app.post('/workshops', server.createWorkshop)
 app.put('/workshop/:id', server.updateOneWorkshop)
 app.delete('/workshop/:id', server.deleteOneWorkshop)
 app.get('/sms', server.handleResponse)
