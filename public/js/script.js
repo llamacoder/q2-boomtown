@@ -1,7 +1,7 @@
 $(document).ready(function() {
   function getWorkshops() {
     const collection_container = $('.collection')
-    axios.get('http://localhost:8000/workshops').then(result => {
+    axios.get('/workshops').then(result => {
       for (let i = 0; i < result.data.length; i++) {
         const wsName = result.data[i].name
         const wsDate = new Date(result.data[i].date)
@@ -58,7 +58,7 @@ $(document).ready(function() {
     divObj.style.display = 'none'
 
     const mentor_container = $('#mentor_container')
-    axios.get('http://localhost:8000/mentors').then(result => {
+    axios.get('/mentors').then(result => {
       for (let i = 0; i < result.data.length; i++) {
         const firstName = result.data[i].first_name
         const lastName = result.data[i].last_name
@@ -111,7 +111,7 @@ $("#save_button").on("click", function() {
     start_time: workshopStartTime,
     end_time: workshopEndTime
   }
-  axios.post('http://localhost:8000/', {receivedInfo})
+  axios.post('/workshops', {receivedInfo})
   .then(function (response){
     console.log(response);
   })
