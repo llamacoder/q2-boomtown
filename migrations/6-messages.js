@@ -3,7 +3,7 @@ exports.up = knex => {
     table.increments('message_id')
     table.integer('workshop_id').notNullable()
     table.foreign('workshop_id').references('workshops.workshop_id')
-    table.string('workshop_name').defaultsTo('')
+    table.string('workshop_name').notNullable().defaultsTo('')
     table.string('phone_number').notNullable().defaultsTo('')
     table.string('message_out').defaultsTo('')
     table.string('message_in').defaultsTo('')
