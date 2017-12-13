@@ -37,11 +37,14 @@ a.collection-item.active {
   background-color:#f15029;
 }
 
-.modal{
-  width: 80% !important;
-  max-height: 85% !important;
+body .modal{
+  width: 600px !important;
+  height: 700px !important;
 }
 
+.datepicker {
+  width: 50%
+}
 .picker__date-display {
   background-color:#f15029;
 }
