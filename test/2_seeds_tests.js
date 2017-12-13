@@ -338,6 +338,7 @@ describe('Messages Seeds', () => {
         expect(message.message_id).to.be.ok
         expect(message.workshop_id).to.be.ok
         expect(message.phone_number).to.be.ok
+        expect(message.workshop_name).to.be.ok
         expect(message.message_out).to.be.ok
         expect(message.message_in).to.be.ok
         expect(message.log_time).to.be.ok

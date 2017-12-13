@@ -355,17 +355,29 @@ describe('Messages Table', () => {
             nullable: false,
             defaultValue: "''::character varying"
           },
+          workshop_name: {
+            type: 'character varying',
+            maxLength: 255,
+            nullable: true,
+            defaultValue: "''::character varying"
+          },
           message_out: {
             type: 'character varying',
             maxLength: 255,
-            nullable: false,
+            nullable: true,
             defaultValue: "''::character varying"
           },
           message_in: {
             type: 'character varying',
             maxLength: 255,
-            nullable: false,
+            nullable: true,
             defaultValue: "''::character varying"
+          },
+          feedback: {
+            type: 'integer',
+            maxLength: null,
+            nullable: true,
+            defaultValue: '-1'
           },
           log_time: {
             type: 'timestamp with time zone',

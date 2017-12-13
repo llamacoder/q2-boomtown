@@ -5,7 +5,6 @@ const notifications = require('./schedule-server')
 
 //  Return all messages
 function getAllMessages(req, res, next) {
-  console.log("inside getAllMessages");
   return knex('messages')
               .then(results => {
                 res.status(200).json(results)
@@ -13,7 +12,7 @@ function getAllMessages(req, res, next) {
 }
 
 
-//  Return all workshops ordered by date then start time
+//  Return all workshops ordered by date
 function getAllWorkshops(req, res, next) {
   return knex('workshops')
               .orderByRaw('date')
@@ -77,27 +76,56 @@ function createWorkshop(req, res, next) {
                   //  set up the push notifications for all the founders
                   return knex('founders')
                     .then(founders => {
+                      let msg = `Please rate the content of the ${ws.name} workshop by responding with: \n\t5 (awesome) \n\t4 (good) \n\t3 (ok) \n\t2 (not helpful) \n\t1 (waste of time) \n\t0 (did not attend)`
                       let jobs = founders.map(founder =>
-                      notifications.setupNotifications(ws, founder.phone_number))
+                      notifications.setupNotification(ws, founder.phone_number, msg))
 
                       //  save the jobs in the global array (just stored in a
                       //  global array because they must be restarted if the
                       //  server goes down
                       JOBS = [...JOBS, ...jobs]
-                      res.sendStatus(201)
-                    })
-                })
-        })
-}
 
+                      //  save the message, phone number, and workshop name
+                      //  in the message table
+                      let logTime = new Date()
+                      let promises2 = founders.map(founder => {
+                        return knex('messages').insert({ 'workshop_id': ws.workshop_id,
+                                                         'workshop_name': ws.name,
+                                                         'phone_number': founder.phone_number,
+                                                         'message_out': msg,
+                                                          'log_time': logTime })
+                                                .returning()
+                      })
+                      Promise.all(promises2).then(result => {
+                          console.log("logged the messages")
+                          res.sendStatus(201)
+                      })
+                    })
+                })    // end of promises looping through mentors
+              })
+}
 
 
 function getOneWorkshop(req, res, next) {
   return knex('workshops')
       .where('workshop_id', req.params.id)
       .then(results => {
-        results && results.length > 0 ? res.status(200).json(results[0]) :
-          res.sendStatus(404)
+        if (!results || results.length === 0 ) { res.sendStatus(404) }
+        else {
+          let ws = results[0]
+          //  get the mentors for this workshops
+          return knex('mentors')
+                  .select('mentors.mentor_id', 'mentors.first_name', 'mentors.last_name')
+                  .join('mentors_workshops','mentors.mentor_id',
+                        'mentors_workshops.mentor_id')
+                  .where('mentors_workshops.workshop_id', ws.workshop_id)
+                  .then(mentors => {
+                    ws.mentors = mentors
+                    res.status(200).json(ws)
+                  })
+                  .catch(function(error) {
+                    console.error(error);
+                  })        }
       })
 }
 
@@ -113,11 +141,53 @@ function updateOneWorkshop(req, res, next) {
 }
 
 function deleteOneWorkshop(req, res, next) {
-  // return knex('books').where('id', id)
-  //   .del()
-  //   .returning(['title', 'author', 'genre', 'description',
-  //               'cover_url as coverUrl', 'created_at as createdAt',
-  //               'updated_at as updatedAt'])
+
+  // check if 'mentors_workshops' table has a queried id
+  return knex('mentors_workshops').where('workshop_id', req.params.id).then(
+      (results) => {
+
+  // if 'mentors_workshops' table does not have a queried id, then send status code 400
+        if (!results){
+          console.log('line 118')
+          res.sendStatus(400).json({error:{status:400, message: 'error, no queried id in mentors_workshops'}});
+        } else {
+
+  // if 'mentors_workshops' table has queried id, then delete item w/ queried id
+          knex('mentors_workshops').where('workshop_id', req.params.id).del()
+
+  // check if 'messages' table has queried id
+              .then((results) => knex('messages').where('workshop_id', req.params.id).then(
+                  (results) => {
+
+  // if 'messages' table does not have a queried id, then send status code 400
+                    if (!results){
+                        console.log('line131')
+                        res.sendStatus(400).json({error:{status:400, message: 'error, no queried id in messages'}});
+                    } else {
+
+  // if 'messages' table has queried id, then delete item w/ queried id
+                    knex('messages').where('workshop_id', req.params.id).del()
+
+  // check if 'workshops' table has queried id
+                        .then((results) => knex('workshops').where('workshop_id', req.params.id).then(
+                          (results) => {
+
+  // if 'workshops' table does not have a queried id, then send status code 400
+                            if(!results){
+                              console.log('line144')
+                              res.sendStatus(400).json({error:{status:400, message: 'error, no queried id in workshops'}});
+                            } else {
+
+  // if 'workshops' table has queried id, then delete item w/ queried id
+                            knex('workshops').where('workshop_id', req.params.id).del().then()
+                            && res.sendStatus(200);
+
+                            }}))}}))}})
+
+  // catch all
+  .catch(function(error) {
+        res.sendStatus(400);
+    });
 }
 
 //  Return the most recent message to a founder
@@ -129,11 +199,8 @@ function getLastMessageByNumber(phone_number) {
 }
 
 function handleResponse(req, res, next) {
-  // return knex('books').where('id', id)
-  //   .del()
-  //   .returning(['title', 'author', 'genre', 'description',
-  //               'cover_url as coverUrl', 'created_at as createdAt',
-  //               'updated_at as updatedAt'])
+  console.log("inside handleResponse");
+  console.log(req);
 }
 
 

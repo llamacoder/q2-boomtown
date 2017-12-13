@@ -9,6 +9,7 @@ exports.seed = function(knex, Promise) {
           message_id: 1,
           workshop_id: 1,
           phone_number: '303-653-1652',
+          workshop_name: 'Marketing',
           message_out: 'Please rate the content of this workshop by responding with: \n\t5 (awesome) \n\t4 (good) \n\t3 (ok) \n\t2 (not helpful) \n\t1 (waste of time) \n\t0 (did not attend)',
           message_in: 'this is the message in for #1',
           log_time: '12/8/17 1:00pm'
@@ -17,6 +18,7 @@ exports.seed = function(knex, Promise) {
           message_id: 2,
           workshop_id: 2,
           phone_number: '303-579-3384',
+          workshop_name: 'Consulting',
           message_out: 'Please rate the content of this workshop by responding with: \n\t5 (awesome) \n\t4 (good) \n\t3 (ok) \n\t2 (not helpful) \n\t1 (waste of time) \n\t0 (did not attend)',
           message_in: 'this is the message in for #2',
           log_time: '12/8/17 2:00pm'
@@ -25,6 +27,7 @@ exports.seed = function(knex, Promise) {
           message_id: 3,
           workshop_id: 3,
           phone_number: '312-375-5525',
+          workshop_name: 'Financial Analysis',
           message_out: 'Please rate the content of this workshop by responding with: \n\t5 (awesome) \n\t4 (good) \n\t3 (ok) \n\t2 (not helpful) \n\t1 (waste of time) \n\t0 (did not attend)',
           message_in: 'this is the message in for #3',
           log_time: '12/8/17 3:00pm'
@@ -33,6 +36,7 @@ exports.seed = function(knex, Promise) {
           message_id: 4,
           workshop_id: 3,
           phone_number: '858-231-2588',
+          workshop_name: 'Marketing',
           message_out: 'Please rate the content of this workshop by responding with: \n\t5 (awesome) \n\t4 (good) \n\t3 (ok) \n\t2 (not helpful) \n\t1 (waste of time) \n\t0 (did not attend)',
           message_in: '4',
           log_time: '12/8/17 4:00pm'
