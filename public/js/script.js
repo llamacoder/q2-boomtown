@@ -2,7 +2,7 @@ $(document).ready(function() {
 var WORKSHOP_ID = null
   function getWorkshops() {
     const collection_container = $('.collection')
-    axios.get('http://localhost:8000/').then(result => {
+    axios.get('/workshops').then(result => {
       for (let i = 0; i < result.data.length; i++) {
         const wsId = result.data[i].workshop_id
         const wsStartTime = result.data[i].start_time
@@ -27,7 +27,7 @@ var WORKSHOP_ID = null
               const workshop_box = $('#workshop_listing')
               console.log($('.collection').getChildren);
 
-              axios.delete(`http://localhost:8000/${id}`)
+              axios.delete(`/workshop/${id}`)
                 .then(result => {
                 })
             })
@@ -52,7 +52,7 @@ var WORKSHOP_ID = null
     divObj.style.display = 'none'
 
     const mentor_container = $('#mentor_container')
-    axios.get('http://localhost:8000/mentors').then(result => {
+    axios.get('/mentors').then(result => {
       for (let i = 0; i < result.data.length; i++) {
         const firstName = result.data[i].first_name
         const lastName = result.data[i].last_name
@@ -89,7 +89,7 @@ var WORKSHOP_ID = null
         // $("#mentor_container").val(event.target.dataset.mentors)
 
         const mentor_container = $('#mentor_container')
-        axios.get('http://localhost:8000/mentors').then(result => {
+        axios.get('/mentors').then(result => {
           for (let i = 0; i < result.data.length; i++) {
             const firstName = result.data[i].first_name
             const lastName = result.data[i].last_name
@@ -141,12 +141,12 @@ var WORKSHOP_ID = null
     }
 
     if(WORKSHOP_ID === null){
-      axios.post('http://localhost:8000/', {receivedInfo})
+      axios.post('/workshops', {receivedInfo})
       .then(function (response){
         console.log(response);
       })
     }else{
-      axios.put(`http://localhost:8000/:${WORKSHOP_ID}`, {receivedInfo})
+      axios.put(`/workshop/:${WORKSHOP_ID}`, {receivedInfo})
       .then(function (response){
         console.log(response)
       })
