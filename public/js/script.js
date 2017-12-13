@@ -1,7 +1,7 @@
 $(document).ready(function() {
   function getWorkshops() {
     const collection_container = $('.collection')
-    axios.get('http://localhost:8000/').then(result => {
+    axios.get('http://localhost:8000/workshops').then(result => {
       for (let i = 0; i < result.data.length; i++) {
         const wsName = result.data[i].name
         const wsDate = new Date(result.data[i].date)
