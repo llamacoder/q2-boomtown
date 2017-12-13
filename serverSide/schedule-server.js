@@ -10,7 +10,7 @@ const schedule = require('node-schedule');
 
 function setupNotifications(ws, phoneNumber) {
   var date = new Date(2017, 11, 12, 07, 21, 0);
-
+  //this is uncool
   console.log(date);
   var j = schedule.scheduleJob(date, function(){
     client.messages.create({
