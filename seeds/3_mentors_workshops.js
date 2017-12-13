@@ -7,7 +7,7 @@ exports.seed = function(knex, Promise) {
       return knex('mentors_workshops').insert([
         { mentor_id: 1, workshop_id: 1 },
         { mentor_id: 2, workshop_id: 1 },
-        { mentor_id: 3, workshop_id: 2 }
+        { mentor_id: 3, workshop_id: 2 },
       ])
     })
 }

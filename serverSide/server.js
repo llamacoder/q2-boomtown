@@ -16,10 +16,23 @@ function getAllMessages(req, res, next) {
 //  Return all workshops ordered by date then start time
 function getAllWorkshops(req, res, next) {
   return knex('workshops')
-              .orderByRaw('date, start_time')
-              .then(results => {
-                res.status(200).json(results)
-        })
+              .orderByRaw('date')
+              .then(workshops => {
+                let promises =  workshops.map(workshop => {
+                  return knex('mentors')
+                      .select('mentors.mentor_id', 'mentors.first_name', 'mentors.last_name')
+                      .join('mentors_workshops','mentors.mentor_id',
+                      'mentors_workshops.mentor_id')
+                      .where('mentors_workshops.workshop_id', workshop.workshop_id)
+                      .then(mentors => {
+                        workshop.mentors = mentors
+                        return workshop
+                      })
+                })
+                Promise.all(promises).then(results => {
+                  res.status(200).json(results)
+                })
+              })
 }
 
 //  Return all mentors ordered by date then start time
