@@ -39,7 +39,7 @@ app.get('/workshop/:id', server.getOneWorkshop)
 app.post('/workshops', server.createWorkshop)
 app.put('/workshop/:id', server.updateOneWorkshop)
 app.delete('/workshop/:id', server.deleteOneWorkshop)
-app.get('/sms', server.handleResponse)
+app.post('/sms', server.handleResponse)
 
 app.use((err, _req, res, _next) => {
   if (err.status && err.message) {

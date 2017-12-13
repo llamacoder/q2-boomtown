@@ -16,7 +16,7 @@ var WORKSHOP_ID = null
           .toString()}-${wsDate
           .getDate()
           .toString()}-${wsDate.getFullYear().toString()}`
-        const htmlString = `<a href = '#modal1' id = 'workshop_listing' class = 'collection-item black-text modal-trigger' data-id=${wsId} data-name=${wsName} data-date=${wsDate} data-start_time=${wsStartTime} data-end_time=${wsEndTime} data-mentors=${wsMentors}>${wsName} : ${officialDate}</a>`
+        const htmlString = `<a href = '#modal1' id = 'workshop_listing' class = 'collection-item black-text modal-trigger' data-id=${wsId} data-name=${wsName} data-date=${officialDate} data-start_time=${wsStartTime} data-end_time=${wsEndTime} data-mentors=${wsMentors}>${wsName} : ${officialDate}</a>`
         collection_container.append(htmlString)
       }
       setWSClickListener()
@@ -27,9 +27,11 @@ var WORKSHOP_ID = null
               const workshop_box = $('#workshop_listing')
               console.log($('.collection').getChildren);
 
-              axios.delete(`/workshop/${id}`)
+              axios.delete(`/workshop/${WORKSHOP_ID}`)
                 .then(result => {
+                  WORKSHOP_ID = null
                 })
+              window.location.reload(true);
             })
 
 
@@ -85,7 +87,8 @@ var WORKSHOP_ID = null
         $("#workshop_date").val(event.target.dataset.date)
         $("#workshop_start").val(event.target.dataset.start_time)
         $("#workshop_end").val(event.target.dataset.end_time)
-        WORKSHOP_ID = event.target.dataset.id
+        WORKSHOP_ID = Number(event.target.dataset.id)
+        Materialize.updateTextFields()   // to prevent overlap of value and label
         // $("#mentor_container").val(event.target.dataset.mentors)
 
         const mentor_container = $('#mentor_container')
@@ -146,7 +149,8 @@ var WORKSHOP_ID = null
         console.log(response);
       })
     }else{
-      axios.put(`/workshop/:${WORKSHOP_ID}`, {receivedInfo})
+      console.log(workshopDate);
+      axios.put(`/workshop/${WORKSHOP_ID}`, {receivedInfo})
       .then(function (response){
         console.log(response)
       })

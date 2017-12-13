@@ -1,4 +1,6 @@
 const knex = require('../knex');
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
+
 var JOBS = []
 
 const notifications = require('./schedule-server')
@@ -15,7 +17,7 @@ function getAllMessages(req, res, next) {
 //  Return all workshops ordered by date
 function getAllWorkshops(req, res, next) {
   return knex('workshops')
-              .orderByRaw('date')
+              .orderByRaw('date desc')
               .then(workshops => {
                 let promises =  workshops.map(workshop => {
                   return knex('mentors')
@@ -130,14 +132,34 @@ function getOneWorkshop(req, res, next) {
 }
 
 function updateOneWorkshop(req, res, next) {
-  // console.log("Updating... " + id + title + author);
-  // return knex('books').where('id', id)
-  //   .update({'title': title, 'author': author,
-  //                              'genre': genre, 'description':description,
-  //                              'cover_url': coverUrl})
-  //   .returning(['id', 'title', 'author', 'genre', 'description',
-  //               'cover_url as coverUrl', 'created_at as createdAt',
-  //               'updated_at as updatedAt'])
+    console.log('line 93')
+    //  Get all the data fields
+    const { name, start_time, end_time, date, mentors } = req.body.receivedInfo
+    console.log("Updating workshop:" + req.params.id);
+
+    // update workshops table with name, start_time, end_time, and date
+    return knex('workshops')
+      .where('workshop_id', req.params.id)
+      .update('name', name)
+      .update('start_time', start_time)
+      .update('end_time', end_time)
+      .update('date', date)
+      .returning('*')
+      .then( (results) => {
+
+        // delete all items in 'mentors_workshops' table that match workshop_id
+          return knex('mentors_workshops')
+            .where('workshop_id', parseInt(req.params.id))
+            .del()
+
+        // insert 'workshop_id' and 'mentor_id' for each workshop_id
+            .then( (results) => {
+              let promises = mentors.map(mentorId => {
+                return knex('mentors_workshops').insert({"mentor_id":mentorId, "workshop_id": parseInt(req.params.id)})
+              })
+              Promise.all(promises).then(results => res.sendStatus(200))
+          })
+      })
 }
 
 function deleteOneWorkshop(req, res, next) {
@@ -200,7 +222,20 @@ function getLastMessageByNumber(phone_number) {
 
 function handleResponse(req, res, next) {
   console.log("inside handleResponse");
-  console.log(req);
+  const twiml = new MessagingResponse();
+
+  twiml.message('Thanks for your feedback!');
+
+  res.writeHead(200, {'Content-Type': 'text/xml'});
+  res.end(twiml.toString());
+  console.log("still here...");
+  //  now update the lastest
+  // return knex('messages')
+  //             .insert({"workshop_id": 2, "start_time": start_time,
+  //                     "end_time": end_time, "date": date})
+  //             .returning('*')
+  //             .then(results => {
+
 }
 
 
