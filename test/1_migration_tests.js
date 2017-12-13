@@ -373,6 +373,12 @@ describe('Messages Table', () => {
             nullable: true,
             defaultValue: "''::character varying"
           },
+          feedback: {
+            type: 'integer',
+            maxLength: null,
+            nullable: true,
+            defaultValue: '-1'
+          },
           log_time: {
             type: 'timestamp with time zone',
             maxLength: 255,

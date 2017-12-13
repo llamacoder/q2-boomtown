@@ -12,13 +12,26 @@ function getAllMessages(req, res, next) {
 }
 
 
-//  Return all workshops ordered by date then start time
+//  Return all workshops ordered by date
 function getAllWorkshops(req, res, next) {
   return knex('workshops')
-              .orderByRaw('date, start_time')
-              .then(results => {
-                res.status(200).json(results)
-        })
+              .orderByRaw('date')
+              .then(workshops => {
+                let promises =  workshops.map(workshop => {
+                  return knex('mentors')
+                      .select('mentors.mentor_id', 'mentors.first_name', 'mentors.last_name')
+                      .join('mentors_workshops','mentors.mentor_id',
+                      'mentors_workshops.mentor_id')
+                      .where('mentors_workshops.workshop_id', workshop.workshop_id)
+                      .then(mentors => {
+                        workshop.mentors = mentors
+                        return workshop
+                      })
+                })
+                Promise.all(promises).then(results => {
+                  res.status(200).json(results)
+                })
+              })
 }
 
 //  Return all mentors ordered by date then start time
@@ -93,7 +106,6 @@ function createWorkshop(req, res, next) {
 }
 
 
-
 function getOneWorkshop(req, res, next) {
   return knex('workshops')
       .where('workshop_id', req.params.id)
@@ -129,11 +141,53 @@ function updateOneWorkshop(req, res, next) {
 }
 
 function deleteOneWorkshop(req, res, next) {
-  // return knex('books').where('id', id)
-  //   .del()
-  //   .returning(['title', 'author', 'genre', 'description',
-  //               'cover_url as coverUrl', 'created_at as createdAt',
-  //               'updated_at as updatedAt'])
+
+  // check if 'mentors_workshops' table has a queried id
+  return knex('mentors_workshops').where('workshop_id', req.params.id).then(
+      (results) => {
+
+  // if 'mentors_workshops' table does not have a queried id, then send status code 400
+        if (!results){
+          console.log('line 118')
+          res.sendStatus(400).json({error:{status:400, message: 'error, no queried id in mentors_workshops'}});
+        } else {
+
+  // if 'mentors_workshops' table has queried id, then delete item w/ queried id
+          knex('mentors_workshops').where('workshop_id', req.params.id).del()
+
+  // check if 'messages' table has queried id
+              .then((results) => knex('messages').where('workshop_id', req.params.id).then(
+                  (results) => {
+
+  // if 'messages' table does not have a queried id, then send status code 400
+                    if (!results){
+                        console.log('line131')
+                        res.sendStatus(400).json({error:{status:400, message: 'error, no queried id in messages'}});
+                    } else {
+
+  // if 'messages' table has queried id, then delete item w/ queried id
+                    knex('messages').where('workshop_id', req.params.id).del()
+
+  // check if 'workshops' table has queried id
+                        .then((results) => knex('workshops').where('workshop_id', req.params.id).then(
+                          (results) => {
+
+  // if 'workshops' table does not have a queried id, then send status code 400
+                            if(!results){
+                              console.log('line144')
+                              res.sendStatus(400).json({error:{status:400, message: 'error, no queried id in workshops'}});
+                            } else {
+
+  // if 'workshops' table has queried id, then delete item w/ queried id
+                            knex('workshops').where('workshop_id', req.params.id).del().then()
+                            && res.sendStatus(200);
+
+                            }}))}}))}})
+
+  // catch all
+  .catch(function(error) {
+        res.sendStatus(400);
+    });
 }
 
 //  Return the most recent message to a founder
@@ -145,11 +199,8 @@ function getLastMessageByNumber(phone_number) {
 }
 
 function handleResponse(req, res, next) {
-  // return knex('books').where('id', id)
-  //   .del()
-  //   .returning(['title', 'author', 'genre', 'description',
-  //               'cover_url as coverUrl', 'created_at as createdAt',
-  //               'updated_at as updatedAt'])
+  console.log("inside handleResponse");
+  console.log(req);
 }
 
 
