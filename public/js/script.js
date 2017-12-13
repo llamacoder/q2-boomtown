@@ -93,7 +93,7 @@ console.log(officialDate);
         $("#workshop_end").val(event.target.dataset.end_time)
         WORKSHOP_ID = Number(event.target.dataset.id)
         Materialize.updateTextFields()   // to prevent overlap of value and label
-      
+
 
         const mentor_container = $('#mentor_container')
         axios.get('/mentors').then(result => {
@@ -169,32 +169,6 @@ console.log(officialDate);
   })
 
 
-
-
-
-
-$('.datepicker').pickadate({
-  selectMonths: true, // Creates a dropdown to control month
-  selectYears: 15, // Creates a dropdown of 15 years to control year,
-  today: 'Today',
-  clear: 'Clear',
-  close: 'Ok',
-  closeOnSelect: false,
-  container: 'body' // Close upon selecting a date,
-})
-
-$('.timepicker').pickatime({
-  default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-  fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
-  twelvehour: true, // Use AM/PM or 24-hour format
-  donetext: 'OK', // text for done-button
-  cleartext: 'Clear', // text for clear-button
-  canceltext: 'Cancel', // Text for cancel-button
-  autoclose: false, // automatic close timepicker
-  ampmclickable: true, // make AM PM clickable
-  vibrate: true, // vibrate the device when dragging clock hand
-  aftershow: function() {} //Function for after opening timepicker
-})
 
 
 //end of document ready
