@@ -184,6 +184,7 @@ $('.timepicker').pickatime({
   ampmclickable: true, // make AM PM clickable
   vibrate: true, // vibrate the device when dragging clock hand
   aftershow: function() {} //Function for after opening timepicker
+
 })
 
 
