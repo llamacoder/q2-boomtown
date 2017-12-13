@@ -37,7 +37,7 @@ app.get('/mentors', server.getAllMentors)
 app.get('/messages', server.getAllMessages)
 app.get('/workshop/:id', server.getOneWorkshop)
 app.post('/workshops', server.createWorkshop)
-app.put('/:id', server.updateOneWorkshop)
+app.put('/workshop/:id', server.updateOneWorkshop)
 app.delete('/workshop/:id', server.deleteOneWorkshop)
 app.get('/sms', server.handleResponse)
 
