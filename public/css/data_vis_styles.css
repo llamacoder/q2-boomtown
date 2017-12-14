@@ -1,0 +1,42 @@
+body {
+  width: 100%;
+}
+
+.row {
+  margin: 0 auto;
+  display:flex;
+  position: relative;
+}
+
+#button_wrapper {
+  margin: 0 auto;
+  width: 100%;
+
+}
+#chart_wrapper {
+  margin: 0 auto;
+  margin-top: 50px;
+  width:100%
+
+}
+
+#home_button {
+  margin: 20px;
+  margin-left: 50px;
+  font-size: 40px;
+  background-color: #f15029;
+}
+
+#refresh_button {
+  margin: 20px;
+  margin-left: 50px;
+  font-size: 40px;
+  background-color: #f15029;
+}
+
+.charts {
+  margin: 0 auto;
+  height: 800px;
+  width: 1000px;
+  /* width: 70%; */
+}
