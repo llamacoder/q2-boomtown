@@ -2,6 +2,17 @@ body {
   width: 100%;
 }
 
+h4{
+  font-family: 'Teko', sans-serif;
+}
+#top_banner{
+  font-family: 'Teko', sans-serif;
+}
+
+label{
+  font-family: 'Changa', sans-serif;
+}
+
 .row {
   margin: 0 auto;
   display:flex;
@@ -21,6 +32,7 @@ body {
 }
 
 #home_button {
+  font-family: 'Teko', sans-serif;
   margin: 20px;
   margin-left: 50px;
   font-size: 40px;
@@ -28,6 +40,7 @@ body {
 }
 
 #refresh_button {
+  font-family: 'Teko', sans-serif;
   margin: 20px;
   margin-left: 50px;
   font-size: 40px;

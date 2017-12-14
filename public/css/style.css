@@ -25,6 +25,14 @@ label{
 
 }
 
+#analyze_button {
+    margin: 20px;
+    font-size: 40px;
+    font-family: 'Teko', sans-serif;
+    background-color: #f15029;
+
+}
+
 #footer{
   text-align: center;
   justify-content: space-around;
