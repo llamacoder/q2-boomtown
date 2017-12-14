@@ -1,4 +1,5 @@
 $(document).ready(function() {
+
 var WORKSHOP_ID = null
   function getWorkshops() {
     const collection_container = $('.collection')
@@ -10,12 +11,12 @@ var WORKSHOP_ID = null
         const wsName = result.data[i].name
         const wsDate = new Date(result.data[i].date)
         const wsMentors = JSON.stringify(result.data[i].mentors)
-
-        const officialDate = `${wsDate
-          .getMonth()
+        const wsMonth = wsDate.getMonth() + 1
+        const officialDate = `${wsMonth
           .toString()}-${wsDate
           .getDate()
           .toString()}-${wsDate.getFullYear().toString()}`
+console.log(officialDate);
         const htmlString = `<a href = '#modal1' id = 'workshop_listing' class = 'collection-item black-text modal-trigger' data-id=${wsId} data-name=${wsName} data-date=${officialDate} data-start_time=${wsStartTime} data-end_time=${wsEndTime} data-mentors=${wsMentors}>${wsName} : ${officialDate}</a>`
         collection_container.append(htmlString)
       }
@@ -44,6 +45,7 @@ var WORKSHOP_ID = null
 
   $("#create_button").on("click", function() {
     WORKSHOP_ID = null
+
     $("#workshop_name").val("")
     $("#mentor_container").empty();
     $("#workshop_date").val("");
@@ -75,6 +77,7 @@ var WORKSHOP_ID = null
   })
 
   function setWSClickListener (){
+
   let listingsArray = document.querySelectorAll('#workshop_listing')
   for (let i = 0; i < listingsArray.length; i++) {
     listingsArray[i].onclick = function(event) {
@@ -85,11 +88,12 @@ var WORKSHOP_ID = null
         $("#workshop_end").val("");
         $("#workshop_name").val(event.target.dataset.name)
         $("#workshop_date").val(event.target.dataset.date)
+        console.log(event.target.dataset.date);
         $("#workshop_start").val(event.target.dataset.start_time)
         $("#workshop_end").val(event.target.dataset.end_time)
         WORKSHOP_ID = Number(event.target.dataset.id)
         Materialize.updateTextFields()   // to prevent overlap of value and label
-        // $("#mentor_container").val(event.target.dataset.mentors)
+      
 
         const mentor_container = $('#mentor_container')
         axios.get('/mentors').then(result => {
@@ -128,12 +132,6 @@ var WORKSHOP_ID = null
       selectedMentorsArray.push(Number(mentorsSelected[i].value))
     }
 
-    if(workshopName === "" || workshopDate === "" || workshopStartTime === "" || workshopEndTime === "" || selectedMentorsArray === []) {
-      Materialize.toast("All fields are required!", 4000)
-    }
-    if(new Date(workshopDate) < new Date()) {
-      Materialize.toast("Must select a future date!", 4000)
-    }
 
     const receivedInfo = {
       name: workshopName,
@@ -143,20 +141,31 @@ var WORKSHOP_ID = null
       end_time: workshopEndTime
     }
 
+    if(workshopName === "" || workshopDate === "" || workshopStartTime === "" || workshopEndTime === "" || selectedMentorsArray.length <= 0) {
+      Materialize.toast("All fields are required!", 4000)
+    }else if(new Date(workshopDate) < new Date()) {
+      Materialize.toast("Must select a future date!", 4000)
+    }else{
+
     if(WORKSHOP_ID === null){
       axios.post('/workshops', {receivedInfo})
       .then(function (response){
         console.log(response);
       })
     }else{
-      console.log(workshopDate);
       axios.put(`/workshop/${WORKSHOP_ID}`, {receivedInfo})
       .then(function (response){
         console.log(response)
       })
     }
-
     window.location.reload(true);
+    }
+
+
+
+
+
+
   })
 
 
@@ -170,7 +179,8 @@ $('.datepicker').pickadate({
   today: 'Today',
   clear: 'Clear',
   close: 'Ok',
-  closeOnSelect: false // Close upon selecting a date,
+  closeOnSelect: false,
+  container: 'body' // Close upon selecting a date,
 })
 
 $('.timepicker').pickatime({
