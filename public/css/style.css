@@ -1,15 +1,28 @@
-
-a.collection-item.active {
-  background-color: black;
+body{
+  background-image: url("cubes.png")
 }
+
+h4{
+  font-family: 'Teko', sans-serif;
+}
+#top_banner{
+  font-family: 'Teko', sans-serif;
+}
+
+label{
+  font-family: 'Changa', sans-serif;
+}
+
 #create_button_wrapper {
-    text-align: center;
+  text-align: center;
 }
 
 #create_button {
     margin: 20px;
     font-size: 40px;
+    font-family: 'Teko', sans-serif;
     background-color: #f15029;
+
 }
 
 #footer{
@@ -24,7 +37,6 @@ a.collection-item.active {
   background-color: #f15029;
 }
 
-
 #cancel_button{
   text-align: center;
   justify-content: space-around;
@@ -38,30 +50,13 @@ a.collection-item.active {
 }
 
 body .modal{
-  width: 600px !important;
-  height: 700px !important;
+  max-height: 90%;
+  max-width:80%;
 }
 
 .datepicker {
-  width: 50%
-}
-.picker__date-display {
-  background-color:#f15029;
-}
-.picker__year-display {
-  background-color:#f15029;
-}
-.picker__month-display {
-  background-color:#f15029;
-}
-.picker__day-display {
-  background-color:#f15029;
-}
-.picker__weekday-display {
-  background-color:#f15029;
-}
-.picker__day--selected.picker__day--selected:hover.picker--focused .picker__day--selected {
-  background-color:#f15029;
+  width: 50%;
+  height: 50%
 }
 
 #toast-container {
