@@ -1,15 +1,57 @@
 const knex = require('../knex');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
+const twilio = require('twilio');
+const accountSid = 'AC1c91a6495d887c64e89d6b44e040c6d6'; // Twilio Account SID from www.twilio.com/console
+const authToken = '84252d06d9e17b1be0a4841dd3d61843';   // Twilio Auth Token from www.twilio.com/console
+const client = new twilio(accountSid, authToken);
+const schedule = require('node-schedule');
 
 var JOBS = []
 
-const notifications = require('./schedule-server')
 
-//  Return all messages
-function getAllMessages(req, res, next) {
-  return knex('messages')
+function setupNotification(ws, phoneNumber, msg) {
+   // format the date field properly for the notification scheduler
+  let hours = parseInt(ws.end_time.substring(0,2))
+  if (ws.end_time.substring(5) === "PM") hours += 12
+  let minutes = parseInt(ws.end_time.substring(3,5))
+  let seconds = 0
+  let notifDate = new Date(ws.date.getFullYear(), ws.date.getMonth(),
+        ws.date.getDate(), hours, minutes, seconds)
+  console.log(notifDate);
+
+  let notifNum = `+1${phoneNumber}`
+  console.log(notifNum);
+  var j = schedule.scheduleJob(notifDate, function(){
+    //  first create and send the text message
+    client.messages.create({
+      body: msg,
+        to: notifNum, // Text this number
+        from: '+17205730412' // From a valid Twilio number
+      })
+      .then((message) => {
+        console.log(message.sid)
+        //  then save the message, phone number, and workshop name
+        //  in the message table
+        let logTime = new Date()
+        return knex('messages').insert({ 'workshop_id': ws.workshop_id,
+                                           'workshop_name': ws.name,
+                                           'phone_number': phoneNumber,
+                                           'message_out': msg,
+                                            'log_time': logTime })
+                                .returning()
+                                .then(result => {
+                                    console.log("logged the messages")
+                                    res.sendStatus(201)
+                                  })
+      })
+    })
+}
+
+//  Return average feedback by workshop names
+function getFeedback(req, res, next) {
+  return knex.raw('select avg(feedback), workshop_name from messages where feedback != -1 group by workshop_name')
               .then(results => {
-                res.status(200).json(results)
+                res.status(200).json(results.rows)
         })
 }
 
@@ -80,28 +122,14 @@ function createWorkshop(req, res, next) {
                     .then(founders => {
                       let msg = `Please rate the content of the ${ws.name} workshop by responding with: \n\t5 (awesome) \n\t4 (good) \n\t3 (ok) \n\t2 (not helpful) \n\t1 (waste of time) \n\t0 (did not attend)`
                       let jobs = founders.map(founder =>
-                      notifications.setupNotification(ws, founder.phone_number, msg))
+                      setupNotification(ws, founder.phone_number, msg))
 
                       //  save the jobs in the global array (just stored in a
                       //  global array because they must be restarted if the
                       //  server goes down
                       JOBS = [...JOBS, ...jobs]
+                      res.sendStatus(201)
 
-                      //  save the message, phone number, and workshop name
-                      //  in the message table
-                      let logTime = new Date()
-                      let promises2 = founders.map(founder => {
-                        return knex('messages').insert({ 'workshop_id': ws.workshop_id,
-                                                         'workshop_name': ws.name,
-                                                         'phone_number': founder.phone_number,
-                                                         'message_out': msg,
-                                                          'log_time': logTime })
-                                                .returning()
-                      })
-                      Promise.all(promises2).then(result => {
-                          console.log("logged the messages")
-                          res.sendStatus(201)
-                      })
                     })
                 })    // end of promises looping through mentors
               })
@@ -212,35 +240,43 @@ function deleteOneWorkshop(req, res, next) {
     });
 }
 
-//  Return the most recent message to a founder
-function getLastMessageByNumber(phone_number) {
-  return knex('messages')
-              .where('phone_number', phone_number)
-              .orderBy('phone_number')
-              .limit(1)
+
+function updateFeedback(msg, phone) {
+  return knex.raw(`select message_id from messages where phone_number = ${phone} and feedback = -1 order by log_time asc limit 1`)
+    .then(([msgId]) => {
+      // got the message id to update
+      if (!msgId ) {
+        res.sendStatus(404)
+      } else {
+        // create the sql stmt to add the message text.  If the
+        // text is 0-5, turn it into a number and store it as feedback
+        let sql = `update messages set message_in = ${msg}`
+        var feedback;
+        if (msg.length === 1 && '012345'.includes(msg)) {
+          feedback = parseInt(msg)
+          sql += `, feedback = ${feedback}`
+        }
+        sql += ` where message_id = ${msgId} `
+        return knex.raw(sql)
+          .then(results => {
+            res.sendStatus(201)
+        })
+      }
+  })
+
 }
 
-function handleResponse(req, res, next) {
-  console.log("inside handleResponse");
-  const twiml = new MessagingResponse();
-
-  twiml.message('Thanks for your feedback!');
-
-  res.writeHead(200, {'Content-Type': 'text/xml'});
-  res.end(twiml.toString());
-  console.log("still here...");
-  //  now update the lastest
-  // return knex('messages')
-  //             .insert({"workshop_id": 2, "start_time": start_time,
-  //                     "end_time": end_time, "date": date})
-  //             .returning('*')
-  //             .then(results => {
-
+function handleResponse(req, res) {
+  const body = req.body.Body
+  const phone = req.body.From
+  updateFeedback(body, phone)
+  res.set('Content-Type', 'text/plain')
+  res.send(`Thanks for the feedback!`)
 }
 
 
 
 module.exports = {
   getAllWorkshops, getAllMentors, getOneWorkshop, createWorkshop,
-  updateOneWorkshop, deleteOneWorkshop, handleResponse, getAllMessages
+  updateOneWorkshop, deleteOneWorkshop, handleResponse, getFeedback
 }
