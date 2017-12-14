@@ -2,35 +2,27 @@
   <html>
     <head>
 
-      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-      <script
-      src="https://code.jquery.com/jquery-3.2.1.min.js"
-      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-      crossorigin="anonymous"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+      <title>Boomtown Workshop Scheduler</title>
 
-      <script src="./js/script.js"></script>
+      <!--links to font choices-->
+      <link href="https://fonts.googleapis.com/css?family=Changa" rel="stylesheet">
 
-      <link rel="stylesheet" type="text/css" href="./css/style.css">
+      <link href="https://fonts.googleapis.com/css?family=Teko:700" rel="stylesheet">
 
-      <!--jquery-->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+      <link rel="stylesheet" type="text/css" href="css/style.css">
+
+
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
 
-      <!-- Compiled and minified CSS -->
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-
-      <!-- Compiled and minified JavaScript -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-
-      <!--Import Google Icon Font-->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+      <link type="text/css" href="css/materialize.css" rel="stylesheet" media="screen,projection" />
 
-      <!--Let browser know website is optimized for mobile-->
-      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-      <title>Boomtown Workshop Scheduler</title>
 
     </head>
 
@@ -41,7 +33,7 @@
         <div class="container">
           <div class="row center">
           <br><br>
-          <h1 class="header white-text center-align">Boomtown Workshop Scheduler</h1>
+          <h1 class="header white-text center-align" id="top_banner">BOOMTOWN WORKSHOP SCHEDULER</h1>
           </div>
           <br><br>
 
@@ -53,6 +45,7 @@
 
         <div class="container valign-center" id="create_button_wrapper">
           <a href="#modal1" class="waves-effect waves-light btn-large modal-trigger" id="create_button">CREATE</a>
+          <a href="data_vis.html" class="waves-effect waves-light btn-large" id="analyze_button">ANALYZE</a>
 
           <div class="collection">
 
@@ -65,48 +58,33 @@
         <!-- Modal Structure -->
         <div id="modal1" class="modal">
           <div class="modal-content">
-            <h4>New Workshop</h4>
+            <h4>WORKSHOP EDITOR</h4>
 
             <div class="row">
               <form class="col s12" id= "workshop_form">
                 <div class="row modal-form-row">
                   <div class="input-field col s12">
-                    <input id="workshop_name" type="text" class="validate">
+                    <input id="workshop_name" type="text">
                     <label for="workshop_name">Name of Workshop</label>
                   </div>
-                </div>
-
-
-
-
-                <div class="row">
-                  <div class="input-field col s12" >
-                    <select id="mentor_container" multiple="multiple">
-                      <option class= "mentor_container" value="" disabled selected >Please Select Mentor(s)</option>
-                    </select>
-                    <label for ="mentor_container">Select Mentor(s)</label>
+                    <div class="input-field col s12" >
+                      <select id="mentor_container" multiple="multiple">
+                        <option class= "mentor_container" value="" disabled selected >Please Select Mentor(s)</option>
+                      </select>
+                      <label for ="mentor_container">Select Mentor(s)</label>
                     </div>
-                </div>
-
-                <div class="row">
-                  <div class="input-field col s12">
-                    <input id="workshop_date" type="text" class="datepicker ">
-                    <label for ="workshop_date" >Select a Date</label>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="input-field col s12">
-                    <input id="workshop_start" type="text" class="timepicker">
-                    <label for ="workshop_start">Select a Start Time</label>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="input-field col s12">
-                    <input id="workshop_end" type="text" class="timepicker">
-                    <label for ="workshop_end">Select an End Time</label>
-                  </div>
+                    <div class="input-field col s12">
+                      <input id="workshop_date" type="text" class="datepicker ">
+                      <label for ="workshop_date" >Select a Date</label>
+                    </div>
+                    <div class="input-field col s12">
+                      <input id="workshop_start" type="text" class="timepicker">
+                      <label for ="workshop_start">Select a Start Time</label>
+                    </div>
+                    <div class="input-field col s12">
+                      <input id="workshop_end" type="text" class="timepicker">
+                      <label for ="workshop_end">Select an End Time</label>
+                    </div>
                 </div>
 
               </form>
@@ -115,18 +93,21 @@
           <div class="modal-footer" id= "footer">
 
             <a
-             href="#" class="waves-effect waves-light btn-large modal-trigger" id="save_button">Save</a>
+             href="#" class="waves-effect waves-light btn modal-trigger" id="save_button">Save</a>
 
              <a
-              href="#" class="waves-effect waves-light btn-large modal-trigger modal-close" id="cancel_button">Cancel</a><br>
+              href="#" class="waves-effect waves-light btn modal-trigger modal-close" id="cancel_button">Cancel</a><br>
 
             <a
-             href="#" class="waves-effect waves-light btn-large modal-trigger modal-close" id="delete_button">Delete</a>
+             href="#" class="waves-effect waves-light btn modal-trigger modal-close" id="delete_button">Delete</a>
           </div>
         </div>
 
-      <!--Import jQuery before materialize.js-->
-      <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+      <script src=js/materialize.js></script>
+      <script src="./js/script.js"></script>
 
     </body>
 
