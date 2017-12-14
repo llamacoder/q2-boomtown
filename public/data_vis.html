@@ -9,9 +9,9 @@
       integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
       crossorigin="anonymous"></script>
 
-      <link rel="stylesheet" type="text/html" href="/index.html">
-      <script src="./public/js/data_vis_scripts.js"></script>
-      <link rel="stylesheet" type="text/css" href="./public/css/style.css">
+
+      <link rel="stylesheet" type="text/css" href="./css/style.css">
+      <link rel="stylesheet" type="text/css" href="./css/data_vis_styles.css">
 
       <!--jquery-->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -27,9 +27,11 @@
       <!--Import Google Icon Font-->
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-      <script type="text/javascript" src="./public/js/script.js"></script>
+
       <!--Let browser know website is optimized for mobile-->
       <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>Boomtown Workshop Scheduler</title>
+
       <!--  This is for the Chart.js library -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.js"></script>
       <title>Boomtown Workshop Scheduler</title>
@@ -37,6 +39,8 @@
     </head>
 
     <body>
+
+
       <div class="section no-pad-bot" id="index-banner" style="background-color: black;">
         <div class="container">
           <div class="row center">
@@ -44,248 +48,30 @@
           <h1 class="header white-text center-align">Boomtown Workshop Scheduler</h1>
           </div>
           <br><br>
+
         </div>
+
+      </div>
+
+
+      <div class="container valign-center" id="create_button_wrapper">
+        <a href="index.html" class="waves-effect waves-light btn-large" id="home_button">HOME</a>
+        <a href="#" class="waves-effect waves-light btn-large" id="refresh_button">REFRESH</a>
+
+        <div class="charts">
+          <canvas id="myChart" ></canvas>
+
+        </div>
+
       </div>
 
 
 
 
-  <!--   adjust height to fit screen?    -->
+      <!--Import jQuery before materialize.js-->
+      <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script> -->
+      <script src="./js/data_vis_scripts.js"></script>
 
-<!-- Home button to return back to the main page...     -->
-    <button type="button" id="home_button">Home</button>
+    </body>
 
-  <!-- This will refresh the current page if changes occur...additionally will run another GET request...     -->
-    <button type="button" id="refresh_button">Refresh</button>
-
-
-<!--      -->
-      <canvas id="myChart" width="400" height="400"></canvas>
-    <script>
-      var ctx = document.getElementById("myChart").getContext('2d');
-      var myChart = new Chart(ctx,
-      {
-        type: 'bar',
-        messageArray:
-        [{
-          labels: [newObj.wkshpName],  // lower labeling (workshops)
-          datasets: [{
-            label: '# of Votes', // this can go away if we want
-            data: [newObj.fbdk], // this is feedback inputs (array of objects)
-
-            backgroundColor: [ // graph bar color
-              'rgba(255, 99, 132, 0.2)'
-            ],
-
-            borderColor: [ // border of graph bar
-              'rgba(255,99,132,1)'
-            ],
-            borderWidth: 1
-          }]
-        },
-        options: {
-          // tooltips: {
-          //   callbacks: {
-          //     labelColor: function(tooltipItem, chart) {
-          //       return {
-          //         borderColor: 'rgb(255, 0, 0)',
-          //         backgroundColor: 'rgb(255, 0, 0)'
-          //       }
-          //     },
-          //     labelTextColor: function(tooltipItem, chart) {
-          //       return '#543453';
-          //     }
-          //   }
-          //}
-
-            //     tooltips: {
-            //     callbacks: {
-            //     label: function(tooltipItem) {
-            //         return "$" + " and so worth it !";
-            //     }
-            // }
-
-          // responsive: true,
-
-
-
-          legend: {
-            display: false
-          }, // This legend is "Number of Votes Label"
-          title: {
-            display: true,
-            text: 'BoomTown Feedback Analytics For Mentor Led Workshops'
-          },
-          scales: {
-            yAxes: [{
-              ticks: {
-                beginAtZero: true
-              }
-            }]
-          }
-        }
-
-      });
-
-      function calcAvg(array){
-        let newArray;
-        for (let i = 0; i < array.length; i++){
-          newArray += array[i];
-        }
-        newArray = newArray / array.length;
-        return newArray// array of items to be dispersed to bars
-      }
-
-    </script>
-
-
-
-
-
-
-      </body>
-
-    </html>
-
-
-<!--
-TO start the chart...
-  - On list selection of itewm (on banner line)
-  - By Button on the main page (like a Feedback Analytics Button)
-
-use the 'route' variable to get the course, date, feedback array, etc.
-parse if needed into an array of values to cycle through
-
-Take values in the array (message "ratings") and add, divide itself to get the average to put on the "toolTips"
-
-Reflect graph by size and toolTips
-
-Append bar to the graph (buttons along the bottom to group by date, workshop, etc.)
-
-Reload the page
-
-
-- add ins
-  - Color Code the bars, add a legend in the top corner for items
-
--->
-
-
-
-<!--
-<!DOCTYPE html>
-<html>
-
-  <head>
-    <link rel="stylesheet" href="style.css">
-
-  </head>
-  <body>
-    <canvas id="myChart"></canvas>
-
-    <script   src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.min.js'></script>
-
-
-   <script>
-     //Create horizontalBar plug-in for ChartJS
-  var originalLineDraw = Chart.controllers.horizontalBar.prototype.draw;
-  Chart.helpers.extend(Chart.controllers.horizontalBar.prototype, {
-
-      draw: function () {
-          originalLineDraw.apply(this, arguments);
-
-          var chart = this.chart;
-          var ctx = chart.chart.ctx;
-
-          var index = chart.config.options.lineAtIndex;
-          if (index) {
-
-              var xaxis = chart.scales['x-axis-0'];
-              var yaxis = chart.scales['y-axis-0'];
-
-              var x1 = xaxis.getPixelForValue(index);
-              var y1 = 0;
-
-              var x2 = xaxis.getPixelForValue(index);
-              var y2 = yaxis.height;
-
-              ctx.save();
-              ctx.beginPath();
-              ctx.moveTo(x1, y1);
-              ctx.strokeStyle = 'orange';  // Line down the center
-              ctx.lineTo(x2, y2);
-              ctx.stroke();
-
-              ctx.restore();
-          }
-      }
-  });
-
-
-   </script>
-
-
-
-<script>
-  //Build the chart
-(function() {
-  var data = {
-      labels: ["Marketing", "Financial Backing", "Consulting", "April", "May", "June"],
-      datasets: [
-          {
-              label: "My First dataset",
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                  'rgba(255,99,132,1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
-              borderWidth: 1,
-              data: [65, 59, 80, 81, 56, 55, 40],
-          }
-      ]
-  };
-
-  //Load Chart
-  var ctx = $("#myChart");
-  var myBarChart = new Chart(ctx, {
-      type: 'horizontalBar',
-      data: data,
-      options: {
-          //Set the index of the value where you want to draw the line
-          lineAtIndex: 50,  // sets a line in data set
-          legend: {
-            display: false
-          }
-      }
-  });
-
-})();
-
-</script>
-
-
-
-  </body>
-
-</html>
-
-
-
-
-
-
-</body>
-</html>
--->
+  </html>
