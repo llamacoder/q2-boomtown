@@ -31,35 +31,40 @@ Prerequisites: NodeJS
 
 Navigate to the folder where you would want to fork and clone the app.  Fork and clone the app, then run the following commands on the terminal:
 
-
-> npm install
-> dropdb bws_dev
-> createdb bws_dev
-> knex migrate:latest
-> knex seed:run
-
+```bash
+$ npm install
+$ dropdb bws_dev
+$ createdb bws_dev
+$ knex migrate:latest
+$ knex seed:run
+```
 
 To open the html page, type the following on the terminal:
 
-> npm start
+```bash
+$ npm start
+```
 
 Then open a browser to localhost/8000
 
 To open the source files in atom, type the following on the terminal:
 
-> atom .
-
+```bash
+$ atom .
+```
 
 The database structure contains 6 tables, arranged in the following entity-relationship-diagram:
 
 ![Example](readme_files/boomtown_delivers.png)
 
 To access the database, run the following commands
-> npm install
-> dropdb bws_dev
-> createdb bws_dev
-> knex migrate:latest
-> psql bws_dev
+```bash
+$ npm install
+$ dropdb bws_dev
+$ createdb bws_dev
+$ knex migrate:latest
+$ psql bws_dev
+```
 
 Navigating and editing the database on command line requires PSQL commands.  Navigating and editing the database in the app.js requires knex commands.
 
@@ -68,10 +73,14 @@ Navigating and editing the database on command line requires PSQL commands.  Nav
 
 
 To test the app, run the following command on the terminal:
-> npm test
+```bash
+$ npm test
+```
 
 The tests cover seed migrations, Web Interface server routes, and Twilio API server routes.  If the tests don't automatically stop, then type the following keys simultaneously:
-> ctrl + c
+```bash
+$ ctrl + c
+```
 
 ### Contributions
 
